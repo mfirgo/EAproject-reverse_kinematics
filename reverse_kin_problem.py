@@ -4,11 +4,11 @@ from shapely.geometry import LineString
 from obstacle import Obstacle
 
 class ReverseKinProblem:
-    def __init__(self, robot_arm : RobotArm, targetX, targetY, obstacles, max_time = 100) -> None:
+    def __init__(self, robot_arm : RobotArm, targetX, targetY, obstacles : Obstacle, max_time = 100) -> None:
         self.robot_arm : RobotArm = robot_arm
         self.targetX = targetX
         self.targetY = targetY
-        self.obstacles = obstacles ## single geometry object or obstacle class instance
+        self.obstacles : Obstacle = obstacles ## single geometry object or obstacle class instance
         self.max_time = max_time
     
     def plot_obstacles(self, ax, color = "red"):
@@ -51,7 +51,7 @@ class ReverseKinProblem:
     def evaluate_population(self, population):
         X, Y = self.robot_arm.get_points_population(population)
         score = np.square(X[:,-1] - self.targetX) + np.square(Y[:, -1]-self.targetY)
-        return -score, X, Y
+        return score, X, Y
     
     def get_default_animation_info(self):
         animation_info = self.robot_arm.get_default_animation_info()

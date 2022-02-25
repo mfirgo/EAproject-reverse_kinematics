@@ -19,7 +19,7 @@ class AlgoritmTest:
         self.tau_0 = 1/np.sqrt(2*np.sqrt(3))
 
     def test(self):
-        self.best_objective_value, self.best_chromosome, self.history_objective_values, self.history_best_chromosome, self.history_best_sigmas = self.algoritm.es(
+        self.algoritm.es(
             self.T, self.N, 
             self.number_of_offspring, self.number_of_parents,
             self.start_sigma, self.tau, self.tau_0)
@@ -27,15 +27,15 @@ class AlgoritmTest:
     def print_plots(self):
         plt.figure(figsize=(18, 4))
         plt.plot(self.algoritm.log_objective_values[:, 0], 'r-')
-        plt.plot(self.history_objective_values[:, 1], 'r-')
-        plt.plot(self.history_objective_values[:, 2], 'r-')
+        plt.plot(self.algoritm.log_objective_values[:, 1], 'r-')
+        plt.plot(self.algoritm.log_objective_values[:, 2], 'r-')
         plt.xlabel('iteration')
         plt.ylabel('objective function value')
         plt.title('min/avg/max objective function values')
         plt.show()
 
         plt.figure(figsize=(18, 4))
-        plt.plot(self.history_best_sigmas, 'r-')
+        plt.plot(self.algoritm.log_best_sigmas, 'r-')
         plt.xlabel('iteration')
         plt.ylabel('sigma value')
         plt.title('best sigmas')
@@ -117,7 +117,7 @@ obstacle9 = SingleObstacle(LinearRing([(-3, 1), (-3, 2), (-2, 2), (-2, 1)]), lin
 obstacle10 = SingleObstacle(LinearRing([(1, 1), (2, 1), (2, 2), (1, 2)]), linear_movement(2, 2 ,10))
 obstacle11 = SingleObstacle(LinearRing([(1,-2), (1, -3.5), (3, -3.5), (3, -2)]), linear_movement(2.5, 1 ,17))
 
-
+all_obstacles = [obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6, obstacle7, obstacle8, obstacle9, obstacle10, obstacle11]
 ###################
 # Sample problems #
 ###################
@@ -147,10 +147,10 @@ def double_moving_obstacles():
     test.algoritm.iteration_per_time = 2
     return test
 
-def keyhole_obstacle_problem():
-    anglemin = not_constrained_angles_min(8)
-    anglemax = not_constrained_angles_max(8)
-    lengths = np.ones(8)
+def keyhole_obstacle_problem(n_seg = 8):
+    anglemin = not_constrained_angles_min(n_seg)
+    anglemax = not_constrained_angles_max(n_seg)
+    lengths = np.ones(n_seg)
     arm = RobotArm(lengths, anglemin, anglemax)
     
     target = keyhole_target
@@ -161,26 +161,26 @@ def keyhole_obstacle_problem():
     test.algoritm.iteration_per_time = 10
     return test
 
-def multi_obstacle_random_target():
-    anglemin = not_constrained_angles_min(5)
-    anglemax = not_constrained_angles_max(5)
-    lengths = random_lengths(5, 0.5, 3)
+def multi_obstacle_random_target(n_seg=5, seg_min=0.5, seg_max=3, n_obstacles = 11):
+    anglemin = not_constrained_angles_min(n_seg)
+    anglemax = not_constrained_angles_max(n_seg)
+    lengths = random_lengths(n_seg, seg_min, seg_max)
     arm = RobotArm(lengths, anglemin, anglemax)
 
     target = random_target(lengths.sum())
-    obstacle = Obstacle([obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6, obstacle7, obstacle8, obstacle9, obstacle10, obstacle11])
+    obstacle = Obstacle(all_obstacles[:n_obstacles])
     problem = ReverseKinProblem(arm, target[0], target[1], obstacle)
 
     test = AlgoritmTest(problem, T = 200)
     return test
 
-def multi_obstacle_set_target(target):
+def multi_obstacle_set_target(target, n_seg=5, seg_min=0.5, seg_max=3, n_obstacles=11):
     anglemin = not_constrained_angles_min(5)
     anglemax = not_constrained_angles_max(5)
     lengths = random_lengths(5, 0.5, 3)
     arm = RobotArm(lengths, anglemin, anglemax)
 
-    obstacle = Obstacle([obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6, obstacle7, obstacle8, obstacle9, obstacle10, obstacle11])
+    obstacle = Obstacle(all_obstacles[:n_obstacles])
     problem = ReverseKinProblem(arm, target[0], target[1], obstacle)
 
     test = AlgoritmTest(problem, T = 200)

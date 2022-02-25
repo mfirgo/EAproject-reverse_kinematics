@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-import numpy as np
-import matplotlib.pyplot as plt
-
 class RobotArm():
     def __init__(self, lengths, anglesmin, anglesmax) -> None:
         self.lengths = np.array(lengths, dtype=float)

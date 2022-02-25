@@ -1,7 +1,6 @@
 import numpy as np
-from obstacle import *
+from obstacle import Obstacle # *
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 
 from robot_arm import RobotArm
@@ -44,9 +43,10 @@ class EvolutionAnimation:
         time = current_frame['time']
         self.bottom_text.set_text(self._get_text(current_frame))
         self.objective_x.append(current_frame['time' if self.by_time else 'iteration'])
-        self.objective_y.append(current_frame['best_value'])
+        self.objective_y.append(current_frame['best_true_value'])
         #self.objective_values_plot.set_data(self.objective_x, self.objective_y)
-        self.bx.plot(self.objective_x, self.objective_y, color='red' if current_frame['best_collides'] else 'blue')
+        self.bx.plot(self.objective_x, self.objective_y, color='red' if current_frame['best_collides'] else 'blue', alpha = 0.5)
+        self.bx.plot(current_frame['time' if self.by_time else 'iteration'], current_frame['best_true_value'], 'o', color='red' if current_frame['best_collides'] else 'blue', markersize = 4 )
         self.arm_segments.set_data(current_frame['bestX'], current_frame['bestY'])
         self.arm_joints.set_data(current_frame['bestX'], current_frame['bestY'])
         if current_frame['best_collides']:
@@ -61,7 +61,7 @@ class EvolutionAnimation:
         return self.bottom_text, self.arm_segments, self.arm_joints, *self.obstacle_artists
 
     def animate(self):
-        self.anim = FuncAnimation(self.fig, self.update, frames=range(len(self.frames)), blit=True)
+        self.anim = animation.FuncAnimation(self.fig, self.update, frames=range(len(self.frames)), blit=True)
         full_filename = f"animations/{self.filename}.mp4"
         #f = full_filename # r"animation.mp4"
         writervideo = animation.FFMpegWriter(fps=6)
@@ -74,7 +74,7 @@ class EvolutionAnimation:
             frame_text += f"{key}: {frame[key]}\n"
         return frame_text #generation:, total individuals, best sigma, distance
 
-
+# function for testing animation
 def create_mock_frames(number_of_frames, robot_arm: RobotArm):
     frames = []
     random_pop = robot_arm.get_random(number_of_frames)

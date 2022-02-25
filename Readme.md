@@ -1,35 +1,28 @@
-## Algorytmy ewolucyjne projekt: reverse kinematics
+# Algorytmy ewolucyjne projekt: reverse kinematics
 
-- napisać email na www
+Projekt z przedmiotu algorytmy ewolucyjne 2021/2022 na Uniwersytecie Wrocławskim.
+Autor: Martyna Firgolska
 
-TODO:
-done: log_dict
-done: funkcja tworząca log dict i appendująca do history
-done: measure time
-done: funkcja tworząca frames z history
-done: animacja obstacles
-done: animacja arm
-done: testing class
-done: change color if collides
+Raport z projektu znajduje się w pliku test_cases.ipynb
 
-sample problems:
-- done: single static
-- done: double moving
+Projekt wykorzystuje bibliotekę shapely https://shapely.readthedocs.io/en/stable/manual.html
+pip3 install shapely
 
-algoritm info - wypisywanie/pokazywanie na animacji
-done: cleanup algorytmu
+### Klasy użyte w projekcie:
 
-przystosowanie algorytmu:
-- ustalić procent niepoprawnej populacji
-- done: zwiększyć sigmy niepoprawnych osobników - działa dla test2
-- dodać losowych osobników przy zmianie czasu
-- zmienić liczbę iteracji w zależności od czasu
+#### Algoritm - plik algorytm.py
 
+#### Obstacle, SimpleObstacle - plik obstacle.py
 
-TODO:
-- Done: wykres objective value 
-- Done: zwolnić animację
-- napisac raport: opisać funkcję celu, algorytm
+SimpleObstacle korzysta z bibioteki shapely
+SimpleObstacle.current_obj i .starting_obj są obiektami typu shapely.LinearRing ale mogą być dowolnymi obiektami geometrycznymi
+Simple Obstacle używa funkcji intersects z biblioteki shapely aby wykrywać kolizje
 
-- iteration/time - ustawianie ilości czasu
-- time_step
+#### RobotArm - plik robot_arm.py
+#### ReverseKinProblem - plik reverse_kin_problem.py
+Do znajdowania kolidujących indeksów zamieniamy osobniki na objekty LineString i korzystamy z Obstacle.intersects które korzysta z shapely
+
+#### EvolutionAnimation - plik evolution_animation.py
+
+#### AlgoritmTest - plik test_examples.py 
+W tym pliku znajdują się również definicje testów użytych w raporcie i kilka funkcji ułatwiających tworzenie testów.
