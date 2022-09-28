@@ -1,12 +1,12 @@
 # Algorytmy ewolucyjne projekt: reverse kinematics
 
-Projekt z przedmiotu algorytmy ewolucyjne 2021/2022 na Uniwersytecie Wrocławskim.
-Autor: Martyna Firgolska
+Projekt z przedmiotu algorytmy ewolucyjne 2021/2022 na Uniwersytecie Wrocławskim.  
+Autor: Martyna Firgolska  
 
-Raport z projektu znajduje się w pliku test_cases.ipynb
+Raport z projektu znajduje się w pliku test_cases.ipynb  
 
-Projekt wykorzystuje bibliotekę shapely https://shapely.readthedocs.io/en/stable/manual.html
-pip3 install shapely
+Projekt wykorzystuje bibliotekę shapely https://shapely.readthedocs.io/en/stable/manual.html  
+```pip3 install shapely```
 
 ### Klasy użyte w projekcie:
 
